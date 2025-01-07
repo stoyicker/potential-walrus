@@ -1,12 +1,9 @@
 package co.touchlab.spotnotes
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -24,7 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -35,10 +32,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import co.touchlab.spotnotes.permission.Permission
+import co.touchlab.spotnotes.permission.RequestResult
+import co.touchlab.spotnotes.permission.buildPermissionManager
 import co.touchlab.spotnotes.ui.HistoryView
 import co.touchlab.spotnotes.ui.SaveView
 import co.touchlab.spotnotes.ui.ui.theme.SpotNotesTheme
-import co.touchlab.spotnotes.R
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     sealed class Screen(
@@ -59,21 +59,19 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun requestPermissions() {
-        if (ActivityCompat.checkSelfPermission(
-                applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            val requestPermissionLauncher = registerForActivityResult(
-                ActivityResultContracts.RequestMultiplePermissions()
-            ) { Log.i("Location", "isGranted: $it") }
-            requestPermissionLauncher.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            )
+        lifecycleScope.launch {
+            val permissionManager = buildPermissionManager(this@MainActivity)
+            when (permissionManager.request(Permission.LOCATION_PRECISION_HIGH)) {
+                RequestResult.NEWLY_GRANTED, RequestResult.ALREADY_GRANTED ->
+                    Log.i("Location", "Have ${Permission.LOCATION_PRECISION_HIGH.asAndroidKey}")
+
+                else -> when (permissionManager.request(Permission.LOCATION)) {
+                    RequestResult.NEWLY_GRANTED, RequestResult.ALREADY_GRANTED ->
+                        Log.i("Location", "Have ${Permission.LOCATION.asAndroidKey}")
+
+                    else -> Log.i("Location", "Did not get location permissions")
+                }
+            }
         }
     }
 }

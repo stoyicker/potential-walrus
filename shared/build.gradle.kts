@@ -40,8 +40,17 @@ kotlin {
         }
     }
 
-    sourceSets.commonMain.dependencies {
-        implementation(libs.kotlinx.coroutines)
+    sourceSets {
+        androidMain.dependencies {
+            implementation(libs.activity.ktx)
+            implementation(libs.core.ktx)
+        }
+        commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines)
+        }
+    }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 }
-

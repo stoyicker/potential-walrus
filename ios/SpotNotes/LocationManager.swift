@@ -1,5 +1,6 @@
 
 import CoreLocation
+import Shared
 
 class LocationManager: NSObject, CLLocationManagerDelegate {
     let manager = CLLocationManager()
@@ -8,7 +9,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     override init() {
         super.init()
         manager.delegate = self
-        manager.requestWhenInUseAuthorization()
+        Task {
+            try? await buildPermissionManager().request(permission: Permission.location)
+        }
     }
     
     func requestLocation() async throws -> CLLocation? {
@@ -27,24 +30,12 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         locationContinuation?.resume(throwing: error)
         locationContinuation = nil
     }
-
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch manager.authorizationStatus {
-            
-        case .notDetermined:        // Authorization not determined yet.
-           manager.requestWhenInUseAuthorization()
-            break
-            
-        default:
-            break
-        }
-    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
         locationContinuation?.resume(returning: locations.first)
         locationContinuation = nil
     }
-    
+
     enum LocationError: Error {
         case servicesDisabled
     }

@@ -15,6 +15,9 @@ class Model: ObservableObject{
     
     init(notes: [SpotNote] = []) {
         self.notes = notes
+        Task {
+            try? await buildPermissionManager().request(permission: Permission.location)
+        }
     }
     
     func saveLocation(note:String) async throws{
