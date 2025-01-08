@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         requestPermissions()
         locationManager = LocationManager(applicationContext)
-        setContent { ContentView(locationManager) }
+        setContent { ContentView(locationManager, DistanceCalculator()) }
     }
 
     private fun requestPermissions() {
@@ -77,10 +77,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ContentView(locationManager: LocationManager) {
+fun ContentView(locationManager: LocationManager, distanceCalculator: DistanceCalculator) {
     val navController = rememberNavController()
     val mainViewModel: MainViewModel = viewModel(factory = viewModelFactory {
-        initializer { MainViewModel(locationManager) }
+        initializer { MainViewModel(locationManager, distanceCalculator) }
     })
 
     val uiState: UIState by mainViewModel.uiState.collectAsState()

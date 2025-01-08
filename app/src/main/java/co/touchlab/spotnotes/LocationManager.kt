@@ -33,14 +33,4 @@ class LocationManager(private val applicationContext: Context) {
         )
         return task.await(cancellationTokenSource)
     }
-
-    fun calculateDistance(newLocation: Location?, oldLocation: Location?): Float {
-        if (newLocation == null || oldLocation == null) {
-            return 0f
-        }
-
-        val result = FloatArray(1)
-        Location.distanceBetween(newLocation.latitude, newLocation.longitude, oldLocation.latitude, oldLocation.longitude, result)
-        return result[0]
-    }
 }

@@ -10,27 +10,30 @@ import Shared
 @MainActor
 class Model: ObservableObject{
     
-    @Published var notes:[SpotNote]
+    @Published var notes:[Note]
     private var locationManager = LocationManager()
+    private let distanceCalculator = DistanceCalculator()
     
-    init(notes: [SpotNote] = []) {
+    init(notes: [Note] = []) {
         self.notes = notes
         Task {
             try? await buildPermissionManager().request(permission: Permission.location)
         }
     }
     
-    func saveLocation(note:String) async throws{
+    func saveLocation(note:String) async {
 
-        let newLocation = try await locationManager.requestLocation()
-        let distance = calculateDistance(newLocation: newLocation, oldLocation: notes.last?.location)
-        notes.append(SpotNote(note: note, distance: distance, location: newLocation))
-    }
-    
-    func calculateDistance(newLocation: CLLocation?, oldLocation: CLLocation?) -> CLLocationDistance {
-        guard let newLocation = newLocation, let oldLocation = oldLocation else {
-            return 0
+        let newLocation = try? await locationManager.requestLocation()?.coordinate
+        var newLatLong: KotlinPair<KotlinDouble, KotlinDouble>?
+        if let safeNewLocation = newLocation {
+            newLatLong = KotlinPair(
+                first: KotlinDouble(value: safeNewLocation.latitude),
+                second: KotlinDouble(value: safeNewLocation.longitude)
+            )
         }
-        return newLocation.distance(from: oldLocation)
+        let distance = distanceCalculator.between(
+            latLongA: newLatLong, latLongB: notes.last?.latLong
+        )
+        notes.append(buildNote(note: note, distance: distance, latLong: newLatLong))
     }
 }

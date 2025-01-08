@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import Shared
 import SwiftUI
 
 
@@ -11,7 +12,7 @@ struct HistoryView: View {
     @EnvironmentObject private var model: Model
     
     var body: some View {
-        List(model.notes){ entry in
+        List(model.notes, id: \.id){ (entry: Note) in
                 HStack{
                     Text(entry.note)
                     Spacer()
@@ -25,5 +26,5 @@ struct HistoryView: View {
 
 #Preview {
     HistoryView()
-        .environmentObject(Model(notes: [SpotNote(note: "Test1", distance: 500, location: nil), SpotNote(note: "Test2", distance: 1000, location: nil)]))
+        .environmentObject(Model(notes: [buildNote(note: "Test1", distance: 500, latLong: nil), buildNote(note: "Test2", distance: 1000, latLong: nil)]))
 }

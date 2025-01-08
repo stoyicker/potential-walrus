@@ -13,7 +13,6 @@
 		957E55072B9139A60072F72A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 957E55062B9139A60072F72A /* Preview Assets.xcassets */; };
 		957E550E2B913AEC0072F72A /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957E550D2B913AEC0072F72A /* LocationManager.swift */; };
 		957E55112B93468C0072F72A /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957E55102B93468C0072F72A /* Model.swift */; };
-		957E55142B9347940072F72A /* SpotNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957E55132B9347940072F72A /* SpotNote.swift */; };
 		957E55162B9348FA0072F72A /* SaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957E55152B9348FA0072F72A /* SaveView.swift */; };
 		957E55182B93499A0072F72A /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957E55172B93499A0072F72A /* HistoryView.swift */; };
 /* End PBXBuildFile section */
@@ -27,7 +26,6 @@
 		957E550D2B913AEC0072F72A /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		957E550F2B9206380072F72A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		957E55102B93468C0072F72A /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		957E55132B9347940072F72A /* SpotNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotNote.swift; sourceTree = "<group>"; };
 		957E55152B9348FA0072F72A /* SaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveView.swift; sourceTree = "<group>"; };
 		957E55172B93499A0072F72A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,7 +85,6 @@
 			isa = PBXGroup;
 			children = (
 				957E55102B93468C0072F72A /* Model.swift */,
-				957E55132B9347940072F72A /* SpotNote.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -184,7 +181,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				957E55162B9348FA0072F72A /* SaveView.swift in Sources */,
-				957E55142B9347940072F72A /* SpotNote.swift in Sources */,
 				957E55182B93499A0072F72A /* HistoryView.swift in Sources */,
 				957E55022B9139A50072F72A /* ContentView.swift in Sources */,
 				957E55002B9139A50072F72A /* SpotNotesApp.swift in Sources */,
