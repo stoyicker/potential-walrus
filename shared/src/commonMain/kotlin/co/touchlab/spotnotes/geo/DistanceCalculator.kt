@@ -1,4 +1,4 @@
-package co.touchlab.spotnotes
+package co.touchlab.spotnotes.geo
 
 import kotlin.math.PI
 import kotlin.math.atan2
@@ -8,8 +8,8 @@ import kotlin.math.roundToLong
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class DistanceCalculator {
-    fun between(latLongA: Pair<Double, Double>?, latLongB: Pair<Double, Double>?): Long {
+internal class DistanceCalculator {
+    fun between(latLongA: LatLong?, latLongB: LatLong?): Long {
         if (latLongA == null || latLongB == null) {
             return 0
         }

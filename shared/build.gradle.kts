@@ -47,6 +47,7 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(libs.kotlinx.coroutines)
+            implementation(libs.bundles.compass)
         }
     }
 

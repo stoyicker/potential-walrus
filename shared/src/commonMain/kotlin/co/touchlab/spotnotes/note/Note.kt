@@ -1,10 +1,12 @@
-package co.touchlab.spotnotes
+package co.touchlab.spotnotes.note
+
+import co.touchlab.spotnotes.geo.LatLong
 
 interface Note {
     val id: String
     val note: String
     val distance: Long
-    val latLong: Pair<Double, Double>?
+    val latLong: LatLong?
 }
 
 /**
@@ -16,7 +18,5 @@ internal data class NoteImpl(
     override val id: String,
     override val note: String,
     override val distance: Long,
-    override val latLong: Pair<Double, Double>?
+    override val latLong: LatLong?
 ) : Note
-
-expect fun buildNote(note: String, distance: Long, latLong: Pair<Double, Double>?): Note

@@ -32,6 +32,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import co.touchlab.spotnotes.note.NoteFactory
 import co.touchlab.spotnotes.permission.Permission
 import co.touchlab.spotnotes.permission.RequestResult
 import co.touchlab.spotnotes.permission.buildPermissionManager
@@ -49,13 +50,10 @@ class MainActivity : ComponentActivity() {
             Screen("history", R.string.title_history, Icons.AutoMirrored.Filled.List)
     }
 
-    private lateinit var locationManager: LocationManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestPermissions()
-        locationManager = LocationManager(applicationContext)
-        setContent { ContentView(locationManager, DistanceCalculator()) }
+        setContent { ContentView(NoteFactory()) }
     }
 
     private fun requestPermissions() {
@@ -77,10 +75,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ContentView(locationManager: LocationManager, distanceCalculator: DistanceCalculator) {
+fun ContentView(noteFactory: NoteFactory) {
     val navController = rememberNavController()
     val mainViewModel: MainViewModel = viewModel(factory = viewModelFactory {
-        initializer { MainViewModel(locationManager, distanceCalculator) }
+        initializer { MainViewModel(noteFactory) }
     })
 
     val uiState: UIState by mainViewModel.uiState.collectAsState()

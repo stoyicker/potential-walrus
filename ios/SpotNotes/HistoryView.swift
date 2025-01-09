@@ -26,5 +26,12 @@ struct HistoryView: View {
 
 #Preview {
     HistoryView()
-        .environmentObject(Model(notes: [buildNote(note: "Test1", distance: 500, latLong: nil), buildNote(note: "Test2", distance: 1000, latLong: nil)]))
+        .environmentObject(
+            Model(
+                notes: [
+                    StubNote(note: "Test1", distance: 500),
+                    StubNote(note: "Test2", distance: 1000)
+                ]
+            )
+        )
 }
