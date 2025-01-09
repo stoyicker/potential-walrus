@@ -12,17 +12,30 @@ class Model: ObservableObject{
     
     @Published var notes:[Note]
     private var noteFactory = NoteFactory()
+    private var noteTable = DatabaseTableProxy.Factory()
+        .create(databaseDriverFactory: DatabaseDriverFactory())
+        .note
 
     init(notes: [Note] = []) {
         self.notes = notes
         Task {
             try? await buildPermissionManager().request(permission: Permission.location)
         }
+        Task {
+            try? await self.notes.append(contentsOf: noteTable.selectAll())
+        }
     }
 
     func saveLocation(note:String) async {
 
         if let note = try? await noteFactory.create(note: note, lastCoordinates: notes.last?.latLong) {
+            Task {
+                do {
+                    try await noteTable.insert(note: note)
+                } catch {
+                    notes.removeAll { $0 === note }
+                }
+            }
             notes.append(note)
         }
     }

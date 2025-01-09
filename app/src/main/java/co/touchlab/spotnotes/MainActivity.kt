@@ -32,6 +32,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import co.touchlab.spotnotes.db.DatabaseDriverFactory
+import co.touchlab.spotnotes.db.DatabaseTableProxy
+import co.touchlab.spotnotes.db.NoteTable
 import co.touchlab.spotnotes.note.NoteFactory
 import co.touchlab.spotnotes.permission.Permission
 import co.touchlab.spotnotes.permission.RequestResult
@@ -53,7 +56,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestPermissions()
-        setContent { ContentView(NoteFactory()) }
+        setContent {
+            ContentView(
+                NoteFactory(),
+                DatabaseTableProxy.Factory().create(DatabaseDriverFactory(this)).note
+            )
+        }
     }
 
     private fun requestPermissions() {
@@ -75,10 +83,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ContentView(noteFactory: NoteFactory) {
+fun ContentView(noteFactory: NoteFactory, noteTable: NoteTable) {
     val navController = rememberNavController()
     val mainViewModel: MainViewModel = viewModel(factory = viewModelFactory {
-        initializer { MainViewModel(noteFactory) }
+        initializer { MainViewModel(noteFactory, noteTable).apply { initialize() } }
     })
 
     val uiState: UIState by mainViewModel.uiState.collectAsState()

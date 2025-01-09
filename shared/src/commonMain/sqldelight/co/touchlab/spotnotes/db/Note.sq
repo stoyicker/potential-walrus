@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS dbNote (
+    id TEXT PRIMARY KEY NOT NULL ON CONFLICT REPLACE,
+    text TEXT NOT NULL,
+    distance INTEGER NOT NULL,
+    latitude REAL,
+    longitude REAL
+);
+
+selectAll:
+SELECT *
+FROM dbNote;
+
+insert:
+INSERT INTO dbNote(id, text, distance, latitude, longitude)
+VALUES (?, ?, ?, ?, ?);
