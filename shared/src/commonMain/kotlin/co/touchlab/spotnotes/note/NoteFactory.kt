@@ -19,7 +19,7 @@ import kotlin.time.Duration.Companion.minutes
  * without exposing internal types as would happen if we just used default values for the parameters
  * in an approach with a public primary constructor instead
  */
-class NoteFactory private constructor(
+class NoteFactory internal constructor(
     private val distanceCalculator: DistanceCalculator,
     private val locationManager: LocationManager,
     private val clock: Clock,
